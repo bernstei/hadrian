@@ -137,7 +137,7 @@ def test_cli(correlated_data, tmp_path, capsys):
     hadrianalyze(args)
 
     captured = capsys.readouterr().out
-    d = np.asarray([np.fromstring(l, sep=' ') for l in captured.splitlines()[2:]])
+    d = np.asarray([np.fromstring(line, sep=' ') for line in captured.splitlines()[2:]])
 
     assert np.allclose(d[:, 1], 0.0, atol=0.02)
     assert np.allclose(d[:, 2], [0.007, 0.007, 0.007, -0.01], atol=0.002)
