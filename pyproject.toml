@@ -2,7 +2,7 @@
 
 name = "hadrian"
 requires-python = ">=3.11"
-dependencies = [ "numpy", "matplotlib" ]
+dependencies = [ "numpy", "matplotlib", "pandas" ]
 readme = "README.md"
 license = { file = "LICENSE" }
 dynamic = ["version"]
