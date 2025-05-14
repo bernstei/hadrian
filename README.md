@@ -1,5 +1,3 @@
-<div align="center"> DRAFT - DO NOT REDISTRIBUTE </div>
-
 # `Hadrian`, successor of `atrajan`
 
 `hadrian` is a refactoring of the `atrajan` (`a`tomic `traj`ectory `an`alysis) package.
@@ -63,5 +61,3 @@ for _ in range(n_steps):
 
 channel_means, channel_std_errs, channel_decorrelation_times = h.means_and_std_errs(plot_file="decorrelation.pdf")
 ```
-
-<div align="center"> DRAFT - DO NOT REDISTRIBUTE </div>
