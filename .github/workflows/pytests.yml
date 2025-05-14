@@ -1,0 +1,75 @@
+# This is testing the python versions *other than* the
+#   one in the QUIP Docker, which is 3.7.10 at the time
+#   of writing this. Coverage is disabled.
+
+name: Python Package and tests
+
+# on all push actions AND can be triggered manually as well
+on:
+  workflow_dispatch:
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ "3.10" ]
+      max-parallel: 5
+    env:
+      coverage-on-version: "3.10"
+      PIP_CONSTRAINT: pip_constraint.txt
+    defaults:
+      run:
+        shell: bash -l {0}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up python ${{ matrix.python-version }} via conda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-update-conda: true
+          python-version: ${{ matrix.python-version }}
+
+      - name: Check python version
+        run: |
+          which python3
+          python3 --version
+
+      - name: Install misc dependencies
+        run: |
+            python3 -m pip install ruff
+
+      - name: Install hadrian package itself (auto dependencies)
+        run: |
+            python3 -m pip install .
+
+      - name: Lint with ruff
+        run: |
+          # stop the build if there are Python syntax errors or undefined names
+          ruff check hadrian tests
+
+      - name: Test with pytest - plain
+        if: env.coverage-on-version != matrix.python-version
+        run: |
+          pytest -rxXs
+
+      - name: Test with pytest - coverage
+        if: env.coverage-on-version == matrix.python-version
+        run: |
+          pytest -v --cov=wfl --cov-report term --cov-report html --cov-config=tests/.coveragerc --cov-report term-missing --cov-report term:skip-covered -rxXs
+
+      # # DEBUGGING
+      # - name: Setup tmate session
+          # if: failure()
+          # uses: mxschmitt/action-tmate@v3
+          # timeout-minutes: 15
+
+      - name: 'Upload Coverage Data'
+        uses: actions/upload-artifact@v4
+        if: env.coverage-on-version == matrix.python-version
+        with:
+          name: coverage-html-${{ matrix.python-version }}
+          path: coverage-html/
+          retention-days: 7
