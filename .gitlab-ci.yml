@@ -1,0 +1,17 @@
+# image: python:3.11
+image: spork.nre.navy.mil/bernstei_nre/containers/mace
+
+pytests:
+  stage: build
+  tags:
+    - fusion-shared-runner-docker
+  script:
+    - python3 -V
+    - python3 -m pip install pytest ruff
+    - python3 -m pip install numpy matplotlib
+    - ruff check hadrian
+    - pytest --durations=0
+    - python3 -m pip install .
+  retry:
+    max: 2
+    when: runner_system_failure
