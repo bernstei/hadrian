@@ -1,36 +1,16 @@
-# This is testing the python versions *other than* the
-#   one in the QUIP Docker, which is 3.7.10 at the time
-#   of writing this. Coverage is disabled.
-
-name: Python Package and tests
+name: Build and test
 
 # on all push actions AND can be triggered manually as well
 on:
+  push:
   workflow_dispatch:
-  pull_request:
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [ "3.10" ]
-      max-parallel: 5
-    env:
-      coverage-on-version: "3.10"
-      PIP_CONSTRAINT: pip_constraint.txt
-    defaults:
-      run:
-        shell: bash -l {0}
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Set up python ${{ matrix.python-version }} via conda
-        uses: conda-incubator/setup-miniconda@v3
-        with:
-          auto-update-conda: true
-          python-version: ${{ matrix.python-version }}
 
       - name: Check python version
         run: |
