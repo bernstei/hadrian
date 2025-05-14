@@ -263,6 +263,8 @@ class Hadrian:
             interval = max(1, len(self.block_sizes) // 7)
             ax.set_xticks(self.block_sizes[::interval], [f"{int(s)}" for s in self.block_sizes[::interval]])
             ax.set_xlim(self.block_sizes[0] / self.block_size_factor, self.block_sizes[-1] * self.block_size_factor)
+            ax.set_xlabel("block size")
+            ax.set_ylabel("apparent std. err. on mean")
             ax.legend()
             fig.savefig(plot_file, bbox_inches='tight')
 
