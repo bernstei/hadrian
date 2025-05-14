@@ -19,7 +19,7 @@ jobs:
 
       - name: Install misc dependencies
         run: |
-            python3 -m pip install ruff
+            python3 -m pip install pytest ruff
 
       - name: Install hadrian package itself (auto dependencies)
         run: |
